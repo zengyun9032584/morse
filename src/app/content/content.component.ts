@@ -11,13 +11,16 @@ export class ContentComponent implements OnInit, AfterViewInit {
   list = [];
   result = false;
   morse: any;
+  obser: any;
   constructor(private morseService: MorseService) {
   }
 
   ngOnInit() {
-    const obser: any = this.morseService.getJson();
-    obser.subscribe(result => {
-        this.morse = result;
+    this.obser = this.morseService.getObser();
+    this.morseService.getJson();
+    this.obser.subscribe(result => {
+      debugger;
+      this.morse = result;
     });
   }
 
