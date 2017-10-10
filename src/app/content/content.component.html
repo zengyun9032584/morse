@@ -1,2 +1,5 @@
-<!-- <button pButton type="button" label="click"></button> -->
-
+<span class="ui-float-label input-bottom">
+    <input id="inputStr" type="text" size="30" pInputText [(ngModel)]="inputVal"> 
+    <label for="inputStr">input a string</label>
+</span>
+<button id="button1" pButton type="button" label="提交" (click)="getInputVal()"></button>
