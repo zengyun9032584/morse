@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subject, Subscriber, Subscription } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
+// import { Subject } from 'rxjs/Subject';
+// import { Subscription } from 'rxjs/Subscription';
 
 @Injectable()
 export class MorseService {
