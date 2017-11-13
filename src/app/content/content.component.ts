@@ -1,13 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {MorseService} from '../service/morse-list/list.service';
-import {TreeNode} from 'primeng/primeng';
+import { Component, OnInit } from '@angular/core';
+import { MorseService } from '../service/morse-list/list.service';
+import { TreeNode } from 'primeng/primeng';
 
-@Component({selector: 'app-content', templateUrl: './content.component.html', styleUrls: ['./content.component.css']})
+@Component({ selector: 'app-content', templateUrl: './content.component.html', styleUrls: ['./content.component.css'] })
 export class ContentComponent implements OnInit {
   morse: any; // 返回morse编码的json数据
-  inputVal: string; // 绑定输入框的值
-  data: TreeNode[]; // 以流程图展示morse内容的json数据
-  constructor(private morseService: MorseService) {}
+  inputVal = ''; // 绑定输入框的值
+  data: TreeNode[] = []; // 以流程图展示morse内容的json数据
+  status = false;    // 提示信息的开关，默认不显示提示信息
+  constructor(private morseService: MorseService) { }
 
   ngOnInit() {
     this
@@ -26,6 +27,7 @@ export class ContentComponent implements OnInit {
   clearInputCon() {
     this.inputVal = '';
     this.data = [];
+    this.status = false;
   }
 
   /**
@@ -34,20 +36,28 @@ export class ContentComponent implements OnInit {
    * @returns {Array<Array<string>>} => 以数组返回转化后摩尔斯内容
    * @memberof ContentComponent
    */
-  getInputVal(): Array < Array < string >> {
-    const treeNodeRoot = {
-      label: '',
+  getInputVal(): Array<Array<string>> {
+    // 清空数据
+    this.clearData();
+    // 提交后判断输入框是否有内容，没有则给出提示信息，1200ms后消失
+    if (this.inputVal.length === 0) {
+      this.status = true;
+      setTimeout(() => {
+        this.status = false;
+      }, 1200);
+      return;
+    }
+    // 临时存放流程图json数据
+    const treeNodeRoot: TreeNode = {
+      label: '摩尔斯码',
       expanded: true,
       children: []
-    }; // 临时存放流程图json数据
-    treeNodeRoot.label = this.inputVal;
-    const value: any = this
-      .inputVal
-      .split(' ');
+    };
+    const value: any = this.inputVal.split(' ');
     const morseArr = []; // 存放input框内容的morse内容
     // tslint:disable-next-line:prefer-const
     for (let str of value) {
-      const treeNode1 = {
+      const treeNode1: TreeNode = {
         label: '',
         expanded: true,
         children: []
@@ -56,7 +66,7 @@ export class ContentComponent implements OnInit {
       // 去掉左右之间的空格
       const word = str.trim();
       treeNode1.label = word;
-      const treeNode2 = {
+      const treeNode2: TreeNode = {
         label: '',
         expanded: true,
         type: 'content'
@@ -73,21 +83,15 @@ export class ContentComponent implements OnInit {
           words.push(this.morse['type' + letter.toUpperCase()]);
         }
       }
-      treeNode1
-        .children
-        .push(treeNode2);
-      treeNodeRoot
-        .children
-        .push(treeNode1);
+      // 将内容放入根节点
+      treeNode1.children.push(treeNode2);
+      treeNodeRoot.children.push(treeNode1);
       morseArr.push(...words);
       morseArr.push('');
     }
     // 删除最后面的空格占位
     morseArr.pop();
-    this.clearData();
-    this
-      .data
-      .push(treeNodeRoot);
+    this.data.push(treeNodeRoot);
     return morseArr;
   }
 

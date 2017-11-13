@@ -1,17 +1,18 @@
 <span class="ui-float-label input-bottom">
     <input id="inputStr" type="text" size="30" pInputText [(ngModel)]="inputVal" (keyup.enter)="getInputVal()">
     <label for="inputStr">输入一组单词，单词使用空格隔开</label>
+    <span *ngIf="status" class="tip-style">*没有输入任何内容</span>
 </span>
 <button id="button1" pButton type="button" label="提交" (click)="getInputVal()"></button>
 <button id="button1" pButton type="button" label="重置" (click)="clearInputCon()"></button>
 <br/>
 <div class="div-top">
     <p-organizationChart [value]="data">
+        <ng-template let-node pTemplate="default">
+                <span class="title">{{node.label}}</span>
+        </ng-template>
         <ng-template let-node pTemplate="content">
             <span class="morse-content">{{node.label}}</span>
-        </ng-template>
-        <ng-template let-node pTemplate="default">
-            {{node.label}}
         </ng-template>
     </p-organizationChart>
 </div>
