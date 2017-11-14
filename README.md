@@ -24,4 +24,4 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 Before running the tests make sure you are serving the app via `ng serve`.
 
 ## Online demo
-[morse](http://www.lianyijinxiu.xin:4200)
+[morse](https://www.lianyijinxiu.xin:4200)
