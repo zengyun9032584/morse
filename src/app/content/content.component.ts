@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MorseService } from '../service/morse-list/list.service';
 import { TreeNode } from 'primeng/primeng';
+import NProgress from 'nprogress';
 
 @Component({ selector: 'app-content', templateUrl: './content.component.html', styleUrls: ['./content.component.css'] })
 export class ContentComponent implements OnInit {
@@ -47,6 +48,7 @@ export class ContentComponent implements OnInit {
       }, 1200);
       return;
     }
+    NProgress.start();
     // 临时存放流程图json数据
     const treeNodeRoot: TreeNode = {
       label: '摩尔斯码',
@@ -92,6 +94,7 @@ export class ContentComponent implements OnInit {
     // 删除最后面的空格占位
     morseArr.pop();
     this.data.push(treeNodeRoot);
+    NProgress.done();
     return morseArr;
   }
 

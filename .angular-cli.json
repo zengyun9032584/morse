@@ -22,9 +22,12 @@
         "../node_modules/font-awesome/css/font-awesome.min.css",
         "../node_modules/primeng/resources/primeng.min.css",
         "../node_modules/primeng/resources/themes/omega/theme.css",
-        "styles.css"
+        "styles.css",
+        "../node_modules/nprogress/nprogress.css"
       ],
-      "scripts": [],
+      "scripts": [
+        "../node_modules/nprogress/nprogress.js"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

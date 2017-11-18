@@ -13,7 +13,9 @@ export class MorseService {
     getJson(): Observable<any> {
         // 使用Observable返回给组件调用者
         return new Observable<any>(observer => {
-            this.http.get('http://localhost:8081/list').subscribe((result: any) => {
+            // const url = 'https://www.lianyijinxiu.xin:8081/list';
+            const url = 'http://localhost:8081/list';
+            this.http.get(url).subscribe((result: any) => {
                 observer.next(result.letter);
                 observer.complete();
             });
