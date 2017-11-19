@@ -12,12 +12,16 @@ export class ContentComponent implements OnInit {
   constructor(private morseService: MorseService) { }
 
   ngOnInit() {
-    this
-      .morseService
-      .getJson()
-      .subscribe(result => {
-        this.morse = result;
-      });
+    // this
+    //   .morseService
+    //   .getJson()
+    //   .subscribe(result => {
+    //     this.morse = result;
+    //   });
+
+    this.morseService.getJsonByAsync().then((result: any) => {
+      this.morse = result.letter;
+    });
   }
 
   /**
