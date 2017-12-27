@@ -12,13 +12,6 @@ export class ContentComponent implements OnInit {
   constructor(private morseService: MorseService) { }
 
   ngOnInit() {
-    // this
-    //   .morseService
-    //   .getJson()
-    //   .subscribe(result => {
-    //     this.morse = result;
-    //   });
-
     this.morseService.getJsonByAsync().then((result: any) => {
       this.morse = result.letter;
     });
@@ -38,11 +31,11 @@ export class ContentComponent implements OnInit {
   /**
    *
    *
-   * @returns {Array<Array<string>>} => 以数组返回转化后摩尔斯内容
+   * @returns
    * @memberof ContentComponent
    */
-  getInputVal(): Array<Array<string>> {
-    // 清空数据
+  generatePwd() {
+    // 清空上一次数据
     this.clearData();
     // 提交后判断输入框是否有内容，没有则给出提示信息，1200ms后消失
     if (this.inputVal.length === 0) {
@@ -53,64 +46,8 @@ export class ContentComponent implements OnInit {
       return;
     }
     NProgress.start();
-    // 临时存放流程图json数据
-    const treeNodeRoot: TreeNode = {
-      label: '摩尔斯码',
-      expanded: true,
-      children: []
-    };
-    const value: any = this.inputVal.split(' ');
-    const morseArr = []; // 存放input框内容的morse内容
-    // tslint:disable-next-line:prefer-const
-    for (let str of value) {
-      const treeNode1: TreeNode = {
-        label: '',
-        expanded: true,
-        children: []
-      };
-      const words = []; // 存放一个单词的morse密码
-      // 去掉左右之间的空格
-      const word = str.trim();
-      treeNode1.label = word;
-      const treeNode2: TreeNode = {
-        label: '',
-        expanded: true,
-        type: 'content'
-      };
-      treeNode2.label = '';
-      // tslint:disable-next-line:prefer-const
-      for (let letter of word) {
-        // 如果是字母则匹配morse内容
-        if (this.checkInputCon(letter)) {
-          treeNode2.label += this
-            .morse['type' + letter.toUpperCase()]
-            .map(this.tranformDotCon)
-            .join('') + '\t';
-          words.push(this.morse['type' + letter.toUpperCase()]);
-        }
-      }
-      // 将内容放入根节点
-      treeNode1.children.push(treeNode2);
-      treeNodeRoot.children.push(treeNode1);
-      morseArr.push(...words);
-      morseArr.push('');
-    }
-    // 删除最后面的空格占位
-    morseArr.pop();
-    this.data.push(treeNodeRoot);
+    this.data.push(this.generateTreeNode());
     NProgress.done();
-    return morseArr;
-  }
-
-  /**
-   *
-   * 判断传入的参数第一个字符是否是字母
-   * @param {string} letter => 需要判断的内容
-   * @memberof ContentComponent
-   */
-  checkInputCon(letter: string) {
-    const reg = new RegExp(/^[a-zA-Z]/);
-    return reg.test(letter);
   }
 
   /**
@@ -136,5 +73,51 @@ export class ContentComponent implements OnInit {
     } else {
       return '·';
     }
+  }
+
+  /**
+   *
+   * 根据用户输入的值生成摩尔斯树结构
+   * @returns {TreeNode}
+   * @memberof ContentComponent
+   */
+  generateTreeNode(): TreeNode {
+    // 临时存放流程图json数据
+    const treeNodeRoot: TreeNode = {
+      label: '摩尔斯码',
+      expanded: true,
+      children: []
+    };
+    // 使用正则获取所有单词
+    const value: String[] = this.inputVal.match(/\b([a-zA-Z]+)/g);
+    for (const str of value) {
+      const treeNode1: TreeNode = {
+        label: '',
+        expanded: true,
+        children: []
+      };
+      const words = []; // 存放一个单词的morse密码
+      // 去掉左右之间的空格
+      const word = str.trim();
+      treeNode1.label = word;
+      const treeNode2: TreeNode = {
+        label: '',
+        expanded: true,
+        type: 'content'
+      };
+      treeNode2.label = '';
+      // tslint:disable-next-line:prefer-const
+      for (let letter of word) {
+          treeNode2.label += this
+            .morse['type' + letter.toUpperCase()]
+            .map(this.tranformDotCon)
+            .join('') + '\t';
+          words.push(this.morse['type' + letter.toUpperCase()]);
+      }
+      // 将内容放入根节点
+      treeNode1.children.push(treeNode2);
+      treeNodeRoot.children.push(treeNode1);
+    }
+    return treeNodeRoot;
   }
 }
