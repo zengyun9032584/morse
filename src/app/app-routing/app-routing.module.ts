@@ -1,16 +1,14 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
-
-import { ContentComponent } from '../content/content.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/index', pathMatch: 'full' },
-  { path: 'index', component: ContentComponent },
+  { path: 'index', loadChildren: '../content/content.module#ContentModule' },
   { path: '**', redirectTo: '/index' }
 ];
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes,  { preloadingStrategy: PreloadAllModules })],
   exports: [RouterModule],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}]
 })

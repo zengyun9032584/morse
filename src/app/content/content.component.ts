@@ -3,7 +3,11 @@ import { MorseService } from '../service/morse-list/list.service';
 import { TreeNode } from 'primeng/primeng';
 import NProgress from 'nprogress';
 
-@Component({ selector: 'app-content', templateUrl: './content.component.html', styleUrls: ['./content.component.css'] })
+@Component({
+  selector: 'app-content',
+  templateUrl: './content.component.html',
+  styleUrls: ['./content.component.css']
+})
 export class ContentComponent implements OnInit {
   morse: any; // 返回morse编码的json数据
   inputVal = ''; // 绑定输入框的值
@@ -108,11 +112,11 @@ export class ContentComponent implements OnInit {
       treeNode2.label = '';
       // tslint:disable-next-line:prefer-const
       for (let letter of word) {
-          treeNode2.label += this
-            .morse['type' + letter.toUpperCase()]
-            .map(this.tranformDotCon)
-            .join('') + '\t';
-          words.push(this.morse['type' + letter.toUpperCase()]);
+        treeNode2.label += this
+          .morse['type' + letter.toUpperCase()]
+          .map(this.tranformDotCon)
+          .join('') + '\t';
+        words.push(this.morse['type' + letter.toUpperCase()]);
       }
       // 将内容放入根节点
       treeNode1.children.push(treeNode2);
